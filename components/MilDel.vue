@@ -74,6 +74,8 @@ export default class MilAdd extends Vue {
         alert(`삭제 중 문제가 발생했습니다.
         
         ${e}`)
+      } finally {
+        this.getSoldiers()
       }
     }
   }
