@@ -7,7 +7,13 @@
       <NavItem url="/military" title="전역카운터" />
     </ul>
     <ul class="list-none flex justify-self-end">
-      <Btn name="로그인" :category="1" @click.native="signWithGoogle" />
+      <Btn
+        name="로그인"
+        :category="1"
+        @click.native="signWithGoogle"
+        v-if="$accessor.fireUser == null"
+      />
+      <Btn name="로그아웃" :category="2" @click.native="signOut" v-else />
     </ul>
   </nav>
 </template>
@@ -19,10 +25,10 @@ import { Component, Vue } from 'nuxt-property-decorator'
 export default class Navigation extends Vue {
   async signWithGoogle() {
     const provider = new this.$fireModule.auth.GoogleAuthProvider()
-    this.$fire.auth.languageCode = 'korean'
+    this.$fire.auth.useDeviceLanguage()
     try {
       const snapshot = await this.$fire.auth.signInWithPopup(provider)
-      this.$accessor.commit('setFireUser', snapshot.user)
+      this.$accessor.setFireUser(snapshot.user)
     } catch (e) {
       console.log(e)
     }
