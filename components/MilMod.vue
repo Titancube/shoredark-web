@@ -131,7 +131,7 @@ export default class MilAdd extends Vue {
     종류: ${ss.variant}
     `)
         } catch (e) {
-          alert(e)
+          alert(`너는 수장이 아니로구나`)
         } finally {
           this.getSoldiers()
         }
