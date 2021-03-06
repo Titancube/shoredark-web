@@ -28,6 +28,7 @@ export default {
     // https://go.nuxtjs.dev/typescript
     '@nuxt/typescript-build',
     '@nuxtjs/tailwindcss',
+    'nuxt-typed-vuex',
     [
       '@nuxtjs/firebase',
       {
