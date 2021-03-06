@@ -54,7 +54,6 @@ export default class MilAdd extends Vue {
           name: this.name,
           dischargeDate: this.toDate,
           variant: this.variant,
-          status: true,
         })
 
         alert(`
