@@ -30,15 +30,13 @@ export default class Navigation extends Vue {
     const provider = new this.$fireModule.auth.GoogleAuthProvider()
     this.$fire.auth.useDeviceLanguage()
     try {
-      const snapshot = await this.$fire.auth.signInWithPopup(provider)
-      this.$accessor.setFireUser(snapshot.user)
+      await this.$fire.auth.signInWithPopup(provider)
     } catch (e) {
       console.log(e)
     }
   }
   signOut() {
     this.$fire.auth.signOut()
-    this.$accessor.setFireUser(null)
   }
 }
 </script>
