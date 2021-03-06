@@ -24,6 +24,9 @@ import { Component, Vue } from 'nuxt-property-decorator'
 @Component
 export default class Navigation extends Vue {
   async signWithGoogle() {
+    this.$fire.auth.setPersistence(
+      this.$fireModule.auth.Auth.Persistence.SESSION
+    )
     const provider = new this.$fireModule.auth.GoogleAuthProvider()
     this.$fire.auth.useDeviceLanguage()
     try {
