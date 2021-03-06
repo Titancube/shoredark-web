@@ -51,7 +51,7 @@
       </select>
     </div>
     <div class="form-datafield">
-      <Btn name="수정" :category="1" />
+      <Btn name="수정" :category="1" @click.native="uploadSoldier" />
       <Btn name="불러오기" :category="0" @click.native="getSoldiers" />
     </div>
   </div>
@@ -93,6 +93,49 @@ export default class MilAdd extends Vue {
       })
     } catch (e) {
       alert(e)
+    }
+  }
+
+  get toDate(): Date | undefined {
+    if (this.selectedSoldier) {
+      return new Date(this.selectedSoldier.dischargeDate)
+    } else {
+      alert('허용되지 않은 접근입니다')
+      return
+    }
+  }
+
+  async uploadSoldier() {
+    if (this.selectedSoldier != null) {
+      const ss = this.selectedSoldier
+      const conditions = [ss.name, ss.dischargeDate, ss.variant]
+      if (conditions.includes('')) {
+        alert('빠진 부분 없이 작성해주세요')
+        return false
+      } else {
+        try {
+          await this.$fire.firestore.collection('Retire').doc(ss.name).set(
+            {
+              name: ss.name,
+              dischargeDate: this.toDate,
+              variant: ss.variant,
+            },
+            { merge: true }
+          )
+
+          alert(`
+    수정되었습니다
+
+    이름: ${ss.name}
+    전역일: ${ss.dischargeDate}
+    종류: ${ss.variant}
+    `)
+        } catch (e) {
+          alert(e)
+        } finally {
+          this.getSoldiers()
+        }
+      }
     }
   }
 
