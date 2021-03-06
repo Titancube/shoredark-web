@@ -16,6 +16,6 @@ export default class NavItem extends Vue {
 
 <style scoped lang='postcss'>
 .nav-list {
-  @apply p-2 px-4 bg-blue-600 hover:bg-blue-400 duration-150 list-none mr-4 rounded-md;
+  @apply p-2 px-4 bg-blue-700 hover:bg-blue-500 duration-150 list-none mr-4 rounded-md;
 }
 </style>
