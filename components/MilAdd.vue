@@ -31,17 +31,17 @@
 </template>
 
 <script lang='ts'>
-import { Component, Vue, Prop } from 'nuxt-property-decorator'
+import { Component, Vue } from 'nuxt-property-decorator'
 import { format } from 'date-fns'
 
 @Component
 export default class MilAdd extends Vue {
   name: string = ''
-  dischargeDate: string = format(new Date(), 'yyyy-MM-dd')
+  dischargeDate: string = ''
   variant: string = ''
 
   async uploadSoldier() {
-    if (this.name == '' || this.dischargeDate == null)
+    if (this.name !== '' && this.dischargeDate !== '' && this.variant !== '') {
       try {
         await this.$fire.firestore.collection('Retire').doc(this.name).set({
           name: this.name,
@@ -60,6 +60,9 @@ export default class MilAdd extends Vue {
       } catch (e) {
         alert(e)
       }
+    } else {
+      alert('빠진 부분 없이 작성해주세요')
+    }
   }
 }
 </script>
