@@ -32,7 +32,6 @@
 
 <script lang='ts'>
 import { Component, Vue } from 'nuxt-property-decorator'
-import { format } from 'date-fns'
 
 @Component
 export default class MilAdd extends Vue {
@@ -41,7 +40,11 @@ export default class MilAdd extends Vue {
   variant: string = ''
 
   async uploadSoldier() {
-    if (this.name !== '' && this.dischargeDate !== '' && this.variant !== '') {
+    const conditions = [this.name, this.dischargeDate, this.variant]
+    if (conditions.includes('')) {
+      alert('빠진 부분 없이 작성해주세요')
+      return false
+    } else {
       try {
         await this.$fire.firestore.collection('Retire').doc(this.name).set({
           name: this.name,
@@ -51,7 +54,7 @@ export default class MilAdd extends Vue {
         })
 
         alert(`
-    Soldier Created
+    등록되었습니다
 
     이름: ${this.name}
     전역일: ${this.dischargeDate}
@@ -60,8 +63,6 @@ export default class MilAdd extends Vue {
       } catch (e) {
         alert(e)
       }
-    } else {
-      alert('빠진 부분 없이 작성해주세요')
     }
   }
 }
