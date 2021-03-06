@@ -6,10 +6,11 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
+<script lang='ts'>
+import { Component, Vue } from 'nuxt-property-decorator'
 
-export default Vue.extend({})
+@Component
+export default class MilAdd extends Vue {}
 </script>
 
 <style lang="postcss">
@@ -25,17 +26,5 @@ export default Vue.extend({})
   font-size: 100px;
   color: #35495e;
   letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
 }
 </style>
