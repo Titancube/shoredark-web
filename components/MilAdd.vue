@@ -39,6 +39,10 @@ export default class MilAdd extends Vue {
   dischargeDate: string = ''
   variant: string = ''
 
+  get toDate(): Date {
+    return new Date(this.dischargeDate)
+  }
+
   async uploadSoldier() {
     const conditions = [this.name, this.dischargeDate, this.variant]
     if (conditions.includes('')) {
@@ -48,7 +52,7 @@ export default class MilAdd extends Vue {
       try {
         await this.$fire.firestore.collection('Retire').doc(this.name).set({
           name: this.name,
-          dischargeDate: this.dischargeDate,
+          dischargeDate: this.toDate,
           variant: this.variant,
           status: true,
         })
