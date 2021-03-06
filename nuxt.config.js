@@ -29,25 +29,32 @@ export default {
     '@nuxt/typescript-build',
     '@nuxtjs/tailwindcss',
     'nuxt-typed-vuex',
-    [
-      '@nuxtjs/firebase',
-      {
-        config: {
-          apiKey: 'AIzaSyDRSAMGaq3iWz9OXFt1Gm3sP-bRDpcpiNM',
-          authDomain: 'shoredark-app.firebaseapp.com',
-          projectId: 'shoredark-app',
-          storageBucket: 'shoredark-app.appspot.com',
-          messagingSenderId: '93905256938',
-          appId: '1:93905256938:web:b80c75c665ddefe298b293',
-          measurementId: 'G-CTMHJC7P9E',
-        },
-        services: {
-          auth: true, // Just as example. Can be any other service.
-          firestore: true,
-        },
-      },
-    ],
+    '@nuxtjs/firebase',
   ],
+
+  firebase: {
+    config: {
+      apiKey: 'AIzaSyDRSAMGaq3iWz9OXFt1Gm3sP-bRDpcpiNM',
+      authDomain: 'shoredark-app.firebaseapp.com',
+      projectId: 'shoredark-app',
+      storageBucket: 'shoredark-app.appspot.com',
+      messagingSenderId: '93905256938',
+      appId: '1:93905256938:web:b80c75c665ddefe298b293',
+      measurementId: 'G-CTMHJC7P9E',
+    },
+    services: {
+      auth: {
+        persistence: 'session', // default
+        initialize: {
+          onAuthStateChangedMutation: 'ON_AUTH_STATE_CHANGED_MUTATION',
+          onAuthStateChangedAction: 'onAuthStateChangedAction',
+          subscribeManually: false,
+        },
+        ssr: false,
+      },
+      firestore: true,
+    },
+  },
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
