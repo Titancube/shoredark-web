@@ -3,7 +3,7 @@ import { getAccessorType } from 'typed-vuex'
 
 export const state = () => ({
     editable: true,
-    fireUser: null
+    fireUser: {} as any
 })
 
 export type RootState = ReturnType<typeof state>
@@ -13,16 +13,21 @@ export const getters: GetterTree<RootState, RootState> = {
 }
 
 export const mutations: MutationTree<RootState> = {
-    setEdit(state, edit) {
-        state.editable = edit
-    },
-    setFireUser(state, fireU) {
-        state.fireUser = fireU
+    ON_AUTH_STATE_CHANGED_MUTATION(state, { authUser, claim }) {
+        if (!authUser) {
+            state.fireUser = null
+        } else {
+            const { uid, email } = authUser
+            state.fireUser = { uid, email }
+        }
     }
 }
 
 export const actions: ActionTree<RootState, RootState> = {
     //
+    onAuthStateChangedAction() {
+
+    }
 }
 
 export const accessorType = getAccessorType({
