@@ -38,6 +38,7 @@ export default class Navigation extends Vue {
   }
   signOut() {
     this.$fire.auth.signOut()
+    this.$accessor.setFireUser(null)
   }
 }
 </script>
