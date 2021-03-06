@@ -5,11 +5,7 @@
     </div>
     <div class="form-datafield">
       <h2>선택</h2>
-      <select
-        class="w-52 text-black"
-        v-model="selectSoldier"
-        @change="showInConsole"
-      >
+      <select class="w-52 text-black" v-model="selectSoldier">
         <option value="" disabled selected hidden>선택</option>
         <option
           :value="item.name"
@@ -50,10 +46,6 @@ export default class MilAdd extends Vue {
     } catch (e) {
       alert(e)
     }
-  }
-
-  showInConsole() {
-    console.log(this.selectSoldier)
   }
 
   async deleteSoldier() {
