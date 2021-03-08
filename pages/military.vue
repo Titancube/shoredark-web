@@ -7,10 +7,19 @@
 </template>
 
 <script lang='ts'>
-import { Component, Vue, Prop } from 'nuxt-property-decorator'
+import { Component, Vue } from 'nuxt-property-decorator'
 
 @Component
-export default class military extends Vue {}
+export default class military extends Vue {
+  beforeRouteEnter(to: any, from: any, next: any) {
+    next((vm: { $accessor: { fireUser: any } }) => {
+      if (!vm.$accessor.fireUser) {
+        alert('권한이 없습니다')
+        next('/')
+      }
+    })
+  }
+}
 </script>
 
 <style lang='postcss'>
