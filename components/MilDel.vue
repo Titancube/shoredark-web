@@ -7,17 +7,14 @@
       <h2>선택</h2>
       <select class="w-52 text-black" v-model="selectSoldier">
         <option value="" disabled selected hidden>선택</option>
-        <option
-          :value="item.name"
-          v-for="item in activeSoldiers"
-          :key="item.name"
-        >
+        <option :value="item.id" v-for="item in activeSoldiers" :key="item.id">
           {{ item.name }}
         </option>
       </select>
     </div>
     <div class="form-datafield">
       <Btn name="삭제" :category="2" @click.native="deleteSoldier" />
+      <Btn name="불러오기" :category="0" @click.native="getSoldiers" />
     </div>
   </div>
 </template>
@@ -26,8 +23,8 @@
 import { Component, Vue } from 'nuxt-property-decorator'
 
 @Component
-export default class MilAdd extends Vue {
-  activeSoldiers: { name: string }[] = []
+export default class MilDel extends Vue {
+  activeSoldiers: { id: string; name: string }[] = []
   selectSoldier: string = ''
 
   mounted() {
@@ -40,7 +37,8 @@ export default class MilAdd extends Vue {
     try {
       r.forEach((doc) => {
         this.activeSoldiers.push({
-          name: doc.id,
+          id: doc.id,
+          name: doc.data().name,
         })
       })
     } catch (e) {

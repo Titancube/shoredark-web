@@ -50,7 +50,7 @@ export default class MilAdd extends Vue {
       return false
     } else {
       try {
-        await this.$fire.firestore.collection('Retire').doc(this.name).set({
+        await this.$fire.firestore.collection('Retire').add({
           name: this.name,
           dischargeDate: this.toDate,
           variant: this.variant,

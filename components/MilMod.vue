@@ -11,18 +11,14 @@
         @change="showSelected"
       >
         <option value="" disabled selected hidden>선택</option>
-        <option
-          :value="item.name"
-          v-for="item in activeSoldiers"
-          :key="item.name"
-        >
+        <option :value="item.id" v-for="item in activeSoldiers" :key="item.id">
           {{ item.name }}
         </option>
       </select>
     </div>
     <div class="form-datafield">
       <h2>이름</h2>
-      <input type="text" class="input-mil" v-model="selectedSoldier.name" />
+      <input type="text" class="input-mil" v-model="nameToChange" />
     </div>
     <div class="form-datafield">
       <h2>전역일</h2>
@@ -62,16 +58,23 @@ import { Component, Vue } from 'nuxt-property-decorator'
 import { format } from 'date-fns'
 
 interface Soldier {
+  id: string
   name: string
   dischargeDate: string
   variant: string
 }
 
 @Component
-export default class MilAdd extends Vue {
+export default class MilMod extends Vue {
   activeSoldiers: Soldier[] = []
-  selectedSoldier: Soldier | null = { name: '', dischargeDate: '', variant: '' }
+  selectedSoldier: Soldier = {
+    id: '',
+    name: '',
+    dischargeDate: '',
+    variant: '',
+  }
   selectSoldier: string = ''
+  nameToChange: string = ''
 
   mounted() {
     this.getSoldiers()
@@ -83,7 +86,8 @@ export default class MilAdd extends Vue {
     try {
       r.forEach((doc) => {
         this.activeSoldiers.push({
-          name: doc.id,
+          id: doc.id,
+          name: doc.data().name,
           dischargeDate: format(
             doc.data().dischargeDate.toDate(),
             'yyyy-MM-dd'
@@ -96,28 +100,27 @@ export default class MilAdd extends Vue {
     }
   }
 
-  get toDate(): Date | undefined {
+  get parseToDate(): Date {
     if (this.selectedSoldier) {
       return new Date(this.selectedSoldier.dischargeDate)
     } else {
-      alert('허용되지 않은 접근입니다')
-      return
+      return new Date()
     }
   }
 
   async uploadSoldier() {
     if (this.selectedSoldier != null) {
       const ss = this.selectedSoldier
-      const conditions = [ss.name, ss.dischargeDate, ss.variant]
+      const conditions = [this.nameToChange, ss.dischargeDate, ss.variant]
       if (conditions.includes('')) {
         alert('빠진 부분 없이 작성해주세요')
         return false
       } else {
         try {
-          await this.$fire.firestore.collection('Retire').doc(ss.name).set(
+          await this.$fire.firestore.collection('Retire').doc(ss.id).set(
             {
-              name: ss.name,
-              dischargeDate: this.toDate,
+              name: this.nameToChange,
+              dischargeDate: this.parseToDate,
               variant: ss.variant,
             },
             { merge: true }
@@ -139,10 +142,11 @@ export default class MilAdd extends Vue {
     }
   }
 
-  showSelected() {
+  async showSelected() {
     this.selectedSoldier = this.activeSoldiers.filter(
-      (soldier) => soldier.name == this.selectSoldier
+      (soldier) => soldier.id == this.selectSoldier
     )[0]
+    this.nameToChange = this.selectedSoldier.name
   }
 }
 </script>
