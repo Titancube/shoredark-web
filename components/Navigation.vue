@@ -12,8 +12,15 @@
         :category="1"
         @click.native="signWithGoogle"
         v-if="$accessor.fireUser == null"
+        :key="1"
       />
-      <Btn name="로그아웃" :category="0" @click.native="signOut" v-else />
+      <Btn
+        name="로그아웃"
+        :category="0"
+        @click.native="signOut"
+        v-else
+        :key="0"
+      />
     </ul>
   </nav>
 </template>
