@@ -13,7 +13,7 @@
         @click.native="signWithGoogle"
         v-if="$accessor.fireUser == null"
       />
-      <Btn name="로그아웃" :category="2" @click.native="signOut" v-else />
+      <Btn name="로그아웃" :category="0" @click.native="signOut" v-else />
     </ul>
   </nav>
 </template>
