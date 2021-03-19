@@ -2,29 +2,52 @@
   <div class="container flex-wrap">
     <section class="w-full p-12">
       <h1>전역카운터</h1>
-      <div
-        class="w-full flex flex-wrap md:justify-evenly items-center p-4 mt-12 mb-4 ring-1 ring-gray-500"
+      <fieldset
+        class="w-full flex flex-wrap items-center p-4 mt-12 mb-4 ring-1 duration-150"
+        :class="addSoldier.id ? 'ring-green-300' : 'ring-gray-500 '"
       >
-        <div
-          class="flex justify-between items-center md:mr-4 w-full md:w-auto mb-4 md:mb-0"
+        <transition name="push" mode="">
+          <legend
+            v-if="addSoldier.id"
+            key="1"
+            class="bg-gray-900 px-4 text-xl font-bold text-green-300 absolute transform -translate-y-10 md:block hidden"
+          >
+            수정 모드
+          </legend>
+          <legend
+            v-else
+            key="2"
+            class="bg-gray-900 px-4 text-xl font-bold text-gray-500 absolute transform -translate-y-10 md:block hidden"
+          >
+            신규 등록
+          </legend>
+        </transition>
+        <legend
+          class="bg-gray-900 px-4 text-xl font-bold md:hidden"
+          :class="addSoldier.id ? 'text-green-300' : 'text-gray-500'"
         >
-          <label for="name" class="mr-2">이름</label>
+          {{ addSoldier.id ? '수정 모드' : '신규 등록' }}
+        </legend>
+        <div
+          class="flex justify-between items-center w-full md:px-2 md:py-2 md:w-1/4 mb-4 md:mb-0"
+        >
+          <label for="name" class="mr-2 font-bold text-lg">이름</label>
           <input
             type="text"
             name="name"
             id="name"
-            class="input-mil w-2/3 md:w-auto"
+            class="input-mil w-2/3"
             v-model="addSoldier.name"
           />
         </div>
         <div
-          class="flex justify-between items-center md:mr-4 w-full md:w-auto mb-4 md:mb-0"
+          class="flex justify-between items-center w-full md:px-2 md:py-2 md:w-1/4 mb-4 md:mb-0"
         >
-          <label for="variant" class="mr-2">분류</label>
+          <label for="variant" class="mr-2 font-bold text-lg">분류</label>
           <select
             name="variant"
             id="variant"
-            class="input-mil w-2/3 md:w-auto"
+            class="input-mil w-2/3"
             v-model="addSoldier.variant"
           >
             <option value="" disabled selected hidden>선택</option>
@@ -36,53 +59,71 @@
           </select>
         </div>
         <div
-          class="flex justify-between items-center md:mr-4 w-full md:w-auto mb-4 md:mb-0"
+          class="flex justify-between items-center w-full md:px-2 md:py-2 md:w-1/4 mb-4 md:mb-0"
         >
-          <label for="diacharge" class="mr-2">전역일</label>
+          <label for="diacharge" class="mr-2 font-bold text-lg">전역일</label>
           <input
             type="date"
             name="diacharge"
             id="diacharge"
-            class="input-mil w-2/3 md:w-auto"
+            class="input-mil w-2/3"
             v-model="addSoldier.dischargeDate"
           />
         </div>
-        <div class="flex justify-between items-center md:mr-4 w-full md:w-auto">
+        <div class="flex items-center w-full md:px-2 md:py-2 md:w-1/4">
           <button
-            class="outline-none focus:outline-none w-full md:w-auto py-1 px-4 bg-blue-600 font-bold rounded-md"
+            class="outline-none focus:outline-none w-full md:w-auto py-1 px-4 text-sm bg-blue-600 font-bold rounded-sm"
+            @click="uploadSoldier"
           >
-            추가
+            {{ addSoldier.id ? '수정' : '추가' }}
+          </button>
+          <button
+            v-if="addSoldier.id"
+            class="outline-none focus:outline-none w-full md:w-auto py-1 px-4 text-sm ml-1 bg-gray-800 font-bold rounded-sm"
+            @click="cancelModify"
+          >
+            취소
           </button>
         </div>
-      </div>
-      <div class="w-full p-4 mt-12 mb-4 ring-1 ring-gray-500">
+      </fieldset>
+      <fieldset class="w-full p-4 mt-12 mb-4 ring-1 ring-gray-500">
+        <legend class="bg-gray-900 px-4 text-xl font-bold text-gray-500">
+          복무중인 인원
+        </legend>
         <table class="w-full">
           <thead>
             <tr>
-              <td>이름</td>
-              <td class="hidden md:table-cell">분류</td>
-              <td class="hidden md:table-cell">전역일</td>
-              <td>작업</td>
+              <td class="w-2/3 md:w-1/4 text-gray-500">이름</td>
+              <td class="md:w-1/4 hidden md:table-cell text-gray-500">분류</td>
+              <td class="md:w-1/4 hidden md:table-cell text-gray-500">
+                전역일
+              </td>
+              <td class="w-1/3 md:w-1/4 text-gray-500">작업</td>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="s in activeSoldiers" :key="s.id">
-              <td>{{ s.name }}</td>
-              <td class="hidden md:table-cell">{{ s.variant }}</td>
-              <td class="hidden md:table-cell">{{ s.dischargeDate }}</td>
+            <tr
+              v-for="s in activeSoldiers"
+              :key="s.id"
+              :class="{ 'bg-green-800': addSoldier.id === s.id }"
+            >
+              <td class="w-2/3 md:w-1/4">{{ s.name }}</td>
+              <td class="md:w-1/4 hidden md:table-cell">{{ s.variant }}</td>
+              <td class="md:w-1/4 hidden md:table-cell">
+                {{ s.dischargeDate }}
+              </td>
               <td class="w-1/3 md:w-1/4">
                 <button
-                  class="outline-none focus:outline-none py-1 px-4 text-sm bg-blue-600 rounded-md my-1 md:my-0"
-                >
-                  추가
-                </button>
-                <button
-                  class="outline-none focus:outline-none py-1 px-4 text-sm bg-blue-600 rounded-md my-1 md:my-0"
+                  class="outline-none focus:outline-none py-1 px-4 text-sm bg-blue-600 rounded-sm my-1 md:my-0"
+                  @click="
+                    modifySoldier(s.id, s.name, s.dischargeDate, s.variant)
+                  "
                 >
                   수정
                 </button>
                 <button
-                  class="outline-none focus:outline-none py-1 px-4 text-sm bg-red-600 rounded-md my-1 md:my-0"
+                  class="outline-none focus:outline-none py-1 px-4 text-sm bg-red-600 rounded-sm my-1 md:my-0"
+                  @click="deleteSoldier(s.id, s.name)"
                 >
                   삭제
                 </button>
@@ -90,7 +131,7 @@
             </tr>
           </tbody>
         </table>
-      </div>
+      </fieldset>
     </section>
   </div>
 </template>
@@ -112,8 +153,8 @@ export default class military extends Vue {
   addSoldier: Soldier = {
     id: '',
     name: '',
-    variant: '',
     dischargeDate: '',
+    variant: '',
   }
 
   mounted() {
@@ -146,7 +187,30 @@ export default class military extends Vue {
     return new Date(this.addSoldier.dischargeDate)
   }
 
-  // Master function
+  // Modify soldier
+  modifySoldier(
+    id: string,
+    name: string,
+    dischargeDate: string,
+    variant: string
+  ) {
+    this.addSoldier = {
+      id,
+      name,
+      dischargeDate,
+      variant,
+    }
+  }
+
+  // Cancel modify
+  cancelModify(): void {
+    this.addSoldier = {
+      id: '',
+      name: '',
+      dischargeDate: '',
+      variant: '',
+    }
+  }
 
   // Add a soldier
   async uploadSoldier() {
@@ -160,11 +224,22 @@ export default class military extends Vue {
       return false
     } else {
       try {
-        await this.$fire.firestore.collection('Retire').add({
-          name: this.addSoldier.name,
-          dischargeDate: this.toDate,
-          variant: this.addSoldier.variant,
-        })
+        if (!this.addSoldier.id) {
+          await this.$fire.firestore.collection('Retire').add({
+            name: this.addSoldier.name,
+            dischargeDate: this.toDate,
+            variant: this.addSoldier.variant,
+          })
+        } else {
+          await this.$fire.firestore
+            .collection('Retire')
+            .doc(this.addSoldier.id)
+            .update({
+              name: this.addSoldier.name,
+              dischargeDate: this.toDate,
+              variant: this.addSoldier.variant,
+            })
+        }
 
         alert(`
     등록되었습니다
@@ -175,6 +250,29 @@ export default class military extends Vue {
     `)
       } catch (e) {
         alert(`너는 수장이 아니로구나`)
+      } finally {
+        this.cancelModify()
+        this.getSoldiers()
+      }
+    }
+  }
+
+  // Delete soldier
+  async deleteSoldier(id: string, name: string) {
+    if (
+      confirm(`
+    삭제하시겠습니까?
+    
+    ${name}
+    `)
+    ) {
+      try {
+        await this.$fire.firestore.collection('Retire').doc(id).delete()
+        alert('삭제되었습니다')
+      } catch (e) {
+        alert(`너는 수장이 아니로구나`)
+      } finally {
+        this.getSoldiers()
       }
     }
   }
@@ -220,8 +318,8 @@ tbody > tr > td {
   @apply p-2 text-lg;
 }
 
-tbody > tr:nth-child(2n) {
-  @apply bg-gray-800;
+tbody > tr {
+  @apply border-t-2 border-gray-800 duration-150;
 }
 
 h1,
@@ -236,5 +334,21 @@ p {
 
 ::-webkit-calendar-picker-indicator {
   filter: invert(1);
+}
+
+.push-enter-active,
+.push-leave-active {
+  position: absolute;
+  transition: all 0.15s;
+}
+
+.push-enter {
+  @apply -translate-y-12;
+  opacity: 0;
+}
+
+.push-leave-to {
+  @apply -translate-y-8;
+  opacity: 0;
 }
 </style>
