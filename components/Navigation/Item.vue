@@ -1,6 +1,6 @@
 <template>
   <NuxtLink :to="url">
-    <li class="nav-list">{{ title }}</li>
+    <li>{{ title }}</li>
   </NuxtLink>
 </template>
 
@@ -13,9 +13,3 @@ export default class NavItem extends Vue {
   @Prop(String) url: string
 }
 </script>
-
-<style scoped lang='postcss'>
-.nav-list {
-  @apply p-2 px-4 bg-blue-700 hover:bg-blue-500 duration-150 list-none mr-4 rounded-md;
-}
-</style>

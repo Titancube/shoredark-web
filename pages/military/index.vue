@@ -6,18 +6,18 @@
         class="w-full flex flex-wrap items-center p-4 mt-12 mb-4 ring-1 duration-150"
         :class="addSoldier.id ? 'ring-green-300' : 'ring-gray-500 '"
       >
-        <transition name="push" mode="">
+        <transition name="push" mode="out-in">
           <legend
             v-if="addSoldier.id"
             key="1"
-            class="bg-gray-900 px-4 text-xl font-bold text-green-300 absolute transform -translate-y-10 md:block hidden"
+            class="bg-gray-900 px-4 text-xl font-bold text-green-300 md:block hidden"
           >
             수정 모드
           </legend>
           <legend
             v-else
             key="2"
-            class="bg-gray-900 px-4 text-xl font-bold text-gray-500 absolute transform -translate-y-10 md:block hidden"
+            class="bg-gray-900 px-4 text-xl font-bold text-gray-500 md:block hidden"
           >
             신규 등록
           </legend>
@@ -338,17 +338,15 @@ p {
 
 .push-enter-active,
 .push-leave-active {
-  position: absolute;
-  transition: all 0.15s;
+  transition: all 0.05s;
 }
 
 .push-enter {
-  @apply -translate-y-12;
+  transform: translate(0, -10px);
   opacity: 0;
 }
-
 .push-leave-to {
-  @apply -translate-y-8;
+  transform: translate(0, 10px);
   opacity: 0;
 }
 </style>
