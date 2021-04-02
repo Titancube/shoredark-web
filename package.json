@@ -12,7 +12,7 @@
     "@nuxtjs/axios": "^5.12.5",
     "@nuxtjs/firebase": "^7.5.0",
     "@types/node": "^14.14.37",
-    "core-js": "^3.8.3",
+    "core-js": "^3.10.0",
     "date-fns": "^2.19.0",
     "firebase": "^8.3.0",
     "nuxt": "^2.15.3",
