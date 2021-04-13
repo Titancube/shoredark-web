@@ -1,7 +1,13 @@
 <template>
   <div class="container items-center text-center w-2/3 md:w-full">
     <div>
-      <h1 class="w-2/3">Shoredark Control Panel</h1>
+      <img src="" alt="" />
+      <AtomsBtn
+        name="⭕"
+        :category="0"
+        @click.native="signWithGoogle()"
+        class="rounded-full p-5 px-5"
+      />
     </div>
   </div>
 </template>
@@ -10,7 +16,39 @@
 import { Component, Vue } from 'nuxt-property-decorator'
 
 @Component
-export default class MilAdd extends Vue {}
+export default class StudioAdmin extends Vue {
+  mounted() {
+    this.checkUserStatus()
+  }
+
+  // Sign in with google
+  async signWithGoogle() {
+    this.$fire.auth.setPersistence(
+      this.$fireModule.auth.Auth.Persistence.SESSION
+    )
+    const provider = new this.$fireModule.auth.GoogleAuthProvider()
+    this.$fire.auth.useDeviceLanguage()
+    try {
+      await this.$fire.auth.signInWithPopup(provider)
+    } catch (e) {
+      console.log(e)
+    } finally {
+      this.checkUserStatus()
+    }
+  }
+
+  // Sign out
+  signOut() {
+    this.$fire.auth.signOut()
+    this.$router.push('/')
+  }
+
+  checkUserStatus() {
+    if (this.$accessor.fireUser) {
+      this.$router.push('/main')
+    }
+  }
+}
 </script>
 
 <style lang="postcss">

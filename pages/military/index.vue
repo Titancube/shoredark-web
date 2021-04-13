@@ -157,6 +157,10 @@ export default class military extends Vue {
     variant: '',
   }
 
+  layout() {
+    return 'main'
+  }
+
   mounted() {
     this.getSoldiers()
   }
