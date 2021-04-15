@@ -11,7 +11,7 @@
   "dependencies": {
     "@nuxtjs/axios": "^5.12.5",
     "@nuxtjs/firebase": "^7.5.0",
-    "@types/node": "^14.14.37",
+    "@types/node": "^14.14.39",
     "core-js": "^3.10.1",
     "date-fns": "^2.20.2",
     "firebase": "^8.4.0",
