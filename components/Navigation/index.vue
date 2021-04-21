@@ -17,7 +17,7 @@
         class="absolute w-3/4 md:w-80 top-20 h-screen left-0 z-30"
       >
         <ul class="bg-gray-800 h-full">
-          <nuxt-link to="/">
+          <nuxt-link to="/home">
             <li class="nav-list">홈</li>
           </nuxt-link>
           <ol
