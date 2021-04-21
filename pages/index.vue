@@ -45,7 +45,7 @@ export default class StudioAdmin extends Vue {
 
   checkUserStatus() {
     if (this.$accessor.fireUser) {
-      this.$router.push('/main')
+      this.$router.push('/home')
     }
   }
 }
