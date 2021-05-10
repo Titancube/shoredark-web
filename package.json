@@ -15,7 +15,7 @@
     "core-js": "^3.12.0",
     "date-fns": "^2.21.2",
     "firebase": "^8.5.0",
-    "nuxt": "^2.15.4",
+    "nuxt": "^2.15.5",
     "nuxt-property-decorator": "^2.9.1",
     "nuxt-typed-vuex": "^0.2.0"
   },
